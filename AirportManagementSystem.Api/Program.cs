@@ -1,20 +1,27 @@
+using AirportManagement.Application.Intefaces.IRepository;
+using AirportManagement.Application.Intefaces.IServices;
+using AirportManagement.Application.Repository;
+using AirportManagement.Application.Services;
 using AirportManagement.Database.Data;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Adaugă conexiunea la baza de date
+//  Adăugăm conexiunea la baza de date
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Adaugă serviciile pentru API
+//  Înregistrăm repository și service
+builder.Services.AddScoped<IFlightRepository, FlightRepository>();
+builder.Services.AddScoped<IFlightService, FlightService>();
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configurează middleware
+//  Configurare middleware
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

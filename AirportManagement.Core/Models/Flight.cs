@@ -11,5 +11,12 @@ namespace AirportManagement.Core.Models
         public string Destination { get; set; }
         public DateTime DepartureTime { get; set; }
         public FlightStatus Status { get; set; }
+        
+        public Flight(string flightNumber, string destination, DateTime departureTime)
+        {
+            FlightNumber = flightNumber;
+            Destination = destination;
+            DepartureTime = departureTime;
+        }
     }
 }
