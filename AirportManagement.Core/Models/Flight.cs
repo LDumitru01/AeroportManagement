@@ -1,0 +1,15 @@
+﻿using System.ComponentModel.DataAnnotations;
+using AirportManagement.Core.Enums;
+
+namespace AirportManagement.Core.Models
+{
+    public class Flight
+    {
+        [Key]
+        public int Id { get; set; }  
+        public string FlightNumber { get; set; }
+        public string Destination { get; set; }
+        public DateTime DepartureTime { get; set; }
+        public FlightStatus Status { get; set; }
+    }
+}

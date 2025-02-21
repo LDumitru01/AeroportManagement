@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AirportManagementSystem.Api", "AirportManagementSystem.Api\AirportManagementSystem.Api.csproj", "{05E818B6-D6AE-46BC-ABD3-7118F336621C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AirportManagement.Core", "AirportManagement.Core\AirportManagement.Core.csproj", "{A381EEBA-CDD0-48B6-8BC4-52927AE4FA23}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AirportManagement.Application", "AirportManagement.Application\AirportManagement.Application.csproj", "{820D067D-7174-4EAE-9CEE-A9DA99C3415F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AirportManagement.Database", "AirportManagement.Database\AirportManagement.Database.csproj", "{CF4F7C64-BCB7-45A5-8B73-FD02187390C3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{05E818B6-D6AE-46BC-ABD3-7118F336621C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05E818B6-D6AE-46BC-ABD3-7118F336621C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05E818B6-D6AE-46BC-ABD3-7118F336621C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05E818B6-D6AE-46BC-ABD3-7118F336621C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A381EEBA-CDD0-48B6-8BC4-52927AE4FA23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A381EEBA-CDD0-48B6-8BC4-52927AE4FA23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A381EEBA-CDD0-48B6-8BC4-52927AE4FA23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A381EEBA-CDD0-48B6-8BC4-52927AE4FA23}.Release|Any CPU.Build.0 = Release|Any CPU
+		{820D067D-7174-4EAE-9CEE-A9DA99C3415F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{820D067D-7174-4EAE-9CEE-A9DA99C3415F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{820D067D-7174-4EAE-9CEE-A9DA99C3415F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{820D067D-7174-4EAE-9CEE-A9DA99C3415F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF4F7C64-BCB7-45A5-8B73-FD02187390C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF4F7C64-BCB7-45A5-8B73-FD02187390C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF4F7C64-BCB7-45A5-8B73-FD02187390C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF4F7C64-BCB7-45A5-8B73-FD02187390C3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
