@@ -1,6 +1,6 @@
 ﻿using AirportManagement.Core.Models;
 
-namespace AirportManagement.Application.Intefaces.IRepository;
+namespace AirportManagement.Application.Interfaces.IRepository;
 
 public interface IFlightRepository
 {

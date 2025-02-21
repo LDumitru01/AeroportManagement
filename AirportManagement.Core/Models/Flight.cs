@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using AirportManagement.Core.Enums;
 
 namespace AirportManagement.Core.Models
@@ -6,6 +7,7 @@ namespace AirportManagement.Core.Models
     public class Flight
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }  
         public string FlightNumber { get; set; }
         public string Destination { get; set; }

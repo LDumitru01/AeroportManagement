@@ -1,4 +1,4 @@
-﻿using AirportManagement.Application.Intefaces.IRepository;
+﻿using AirportManagement.Application.Interfaces.IRepository;
 using AirportManagement.Core.Models;
 using AirportManagement.Database.Data;
 using Microsoft.EntityFrameworkCore;
