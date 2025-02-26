@@ -12,5 +12,6 @@ namespace AirportManagement.Database.Data
 
         public DbSet<Flight> Flights { get; set; }
         public DbSet<Passenger> Passengers { get; set; }
+        public DbSet<Ticket> Tickets { get; set; } 
     }
 }

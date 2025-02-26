@@ -28,5 +28,12 @@ namespace AirportManagementSystem.Api.Controllers
             var createdFlight = await _flightService.AddFlightAsync(flight);
             return Created($"api/Flights/{createdFlight.Id}", createdFlight);
         }
+        
+        [HttpGet("available")]
+        public async Task<IActionResult> GetAvailableFlights()
+        {
+            var availableFlights = await _flightService.GetAvailableFlightsAsync();
+            return Ok(availableFlights);
+        }
     }
 }

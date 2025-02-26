@@ -6,5 +6,7 @@ namespace AirportManagement.Application.Interfaces.IServices
     {
         Task<IEnumerable<Flight>> GetFlightsAsync();
         Task<Flight> AddFlightAsync(Flight flight);
+        Task<IEnumerable<Flight>> GetAvailableFlightsAsync();
+        Task<Flight> GetFlightByIdAsync(int requestFlightId);
     }
 }

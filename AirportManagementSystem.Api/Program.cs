@@ -16,6 +16,8 @@ builder.Services.AddScoped<IFlightService, FlightService>(); // Înregistrăm se
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IReservationService, ReservationService>();
+builder.Services.AddScoped<ITicketService, TicketService>();
+builder.Services.AddScoped<ITicketRepository, TicketRepository>();
 
 var app = builder.Build();
 
@@ -25,7 +27,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Airport API V1");
-        c.RoutePrefix = string.Empty; // ✅ Accesează Swagger direct pe rădăcină
+        c.RoutePrefix = string.Empty; 
     });
 }
 
