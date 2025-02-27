@@ -25,7 +25,17 @@ public class TicketRepository : ITicketRepository
     public async Task<IEnumerable<Ticket>> GetAllTicketsAsync()
     {
         return await _context.Tickets
-            .Include(t => t.Flight) // Încarcă explicit entitatea Flight
+            .Include(t => t.Flight)
+            .Include(t =>t.Passenger)
             .ToListAsync();
     }
+
+    public async Task<Ticket?> GetTicketByIdAsync(int ticketId)
+    {
+        return await _context.Tickets
+            .Include(t => t.Flight)
+            .Include(t => t.Passenger)
+            .FirstOrDefaultAsync(t => t.Id == ticketId);
+    }
+
 }

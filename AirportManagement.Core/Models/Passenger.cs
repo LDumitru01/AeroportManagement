@@ -1,18 +1,19 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace AirportManagement.Core.Models;
-
-public class Passenger
+﻿namespace AirportManagement.Core.Models
 {
-    [Key]
-    public int Id { get; set; }
-    public string Name { get; set; }
-    public string PassportNumber { get; set; }
-    public List<int> BookedFlightsIds { get; set; } = new(); //O Lista  cu ID-urile zborurilor rezervate //Respectam SRP Solid
-    
-    public Passenger(string name, string passportNumber)
+    public class Passenger
     {
-        Name = name;
-        PassportNumber = passportNumber;
+        public int Id { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string PassportNumber { get; set; }
+        
+        public Passenger(string firstName, string lastName, string passportNumber)
+        {
+            FirstName = firstName;
+            LastName = lastName;
+            PassportNumber = passportNumber;
+        }
+        
+        public Passenger() {}
     }
 }

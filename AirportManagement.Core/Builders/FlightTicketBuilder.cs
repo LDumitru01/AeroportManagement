@@ -2,39 +2,42 @@
 using AirportManagement.Core.Interfaces;
 using AirportManagement.Core.Models;
 
-namespace AirportManagement.Core.Builders;
-
-public class FlightTicketBuilder : ITicketBuilder
+namespace AirportManagement.Core.Builders
 {
-    private Flight _flight;
-    private SeatType _seat;
-    private MealType _mealOption;
-
-    public ITicketBuilder SetFlight(Flight flight)
+    public class FlightTicketBuilder : ITicketBuilder
     {
-        _flight = flight;
-        return this;
-    }
+        private Flight? _flight;
+        private Passenger? _passenger;
+        private SeatType _seat;
+        private MealType _mealOption;
 
-    public ITicketBuilder SetMealOption(MealType mealOption)
-    {
-        _mealOption = mealOption;
-        return this;
-    }
-
-    public ITicketBuilder SetSeat(SeatType seat)
-    {
-        _seat = seat;
-        return this;
-    }
-
-    public Ticket Build()
-    {
-        if (_flight == null)
+        public ITicketBuilder SetFlight(Flight? flight)
         {
-            throw new InvalidOperationException("Flight is required to create a ticket.");
+            _flight = flight;
+            return this;
         }
 
-        return new Ticket(_flight, _mealOption, _seat);
+        public ITicketBuilder SetPassenger(Passenger? passenger)
+        {
+            _passenger = passenger;
+            return this;
+        }
+
+        public ITicketBuilder SetMealOption(MealType mealOption)
+        {
+            _mealOption = mealOption;
+            return this;
+        }
+
+        public ITicketBuilder SetSeat(SeatType seat)
+        {
+            _seat = seat;
+            return this;
+        }
+
+        public Ticket Build()
+        {
+            return new Ticket(_flight, _passenger, _mealOption, _seat);
+        }
     }
 }

@@ -1,21 +1,29 @@
 ﻿using AirportManagement.Core.Enums;
+using AirportManagement.Core.Interfaces;
 
-namespace AirportManagement.Core.Models;
-
-public class Ticket
+namespace AirportManagement.Core.Models
 {
-    public int Id { get; set; } // Primary Key
-    public Flight Flight { get; set; }
-    public SeatType Seat { get; set; }
-    public MealType MealOption { get; set; }
-
-    // Constructor folosit de Builder
-    public Ticket(Flight flight, MealType mealOption, SeatType seat)
+    public class Ticket : IPrototype<Ticket>
     {
-        Flight = flight;
-        MealOption = mealOption;
-        Seat = seat;
+        public int Id { get; set; }
+        public Flight? Flight { get; set; }
+        public Passenger? Passenger { get; set; }
+        public SeatType Seat { get; set; }
+        public MealType MealOption { get; set; }
+        
+        public Ticket() {}
+
+        public Ticket(Flight? flight, Passenger? passenger, MealType mealOption, SeatType seat)
+        {
+            Flight = flight;
+            Passenger = passenger;
+            MealOption = mealOption;
+            Seat = seat;
+        }
+        public Ticket Clone(string newFirstName, string newLastName, string newPassportNumber)
+        {
+            return new Ticket(Flight, new Passenger(newFirstName, newLastName, newPassportNumber), MealOption, Seat);
+        }
+        
     }
-    
-    private Ticket(){}
 }

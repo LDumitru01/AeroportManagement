@@ -57,11 +57,11 @@ namespace AirportManagement.Database.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.PrimitiveCollection<string>("BookedFlightsIds")
+                    b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -85,15 +85,22 @@ namespace AirportManagement.Database.Migrations
                     b.Property<int>("FlightId")
                         .HasColumnType("int");
 
-                    b.Property<int>("MealOption")
+                    b.Property<string>("MealOption")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PassengerId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Seat")
-                        .HasColumnType("int");
+                    b.Property<string>("Seat")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("FlightId");
+
+                    b.HasIndex("PassengerId");
 
                     b.ToTable("Tickets");
                 });
@@ -106,7 +113,15 @@ namespace AirportManagement.Database.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("AirportManagement.Core.Models.Passenger", "Passenger")
+                        .WithMany()
+                        .HasForeignKey("PassengerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Flight");
+
+                    b.Navigation("Passenger");
                 });
 #pragma warning restore 612, 618
         }

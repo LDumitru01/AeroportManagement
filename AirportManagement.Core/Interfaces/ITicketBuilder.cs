@@ -5,8 +5,9 @@ namespace AirportManagement.Core.Interfaces;
 
 public interface ITicketBuilder
 {
-    ITicketBuilder SetFlight(Flight flight);
+    ITicketBuilder SetFlight(Flight? flight);
     ITicketBuilder SetMealOption(MealType mealOption);
+    ITicketBuilder SetPassenger(Passenger? passenger);
     ITicketBuilder SetSeat(SeatType seat);
     Ticket Build();
 }
