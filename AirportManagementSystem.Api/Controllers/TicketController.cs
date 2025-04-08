@@ -1,16 +1,19 @@
-﻿using AirportManagement.Application.Interfaces.IServices;
+﻿using AirportManagement.Application.Command;
+using AirportManagement.Application.Interfaces.IServices;
+using AirportManagement.Application.Services.Proxy;
+using AirportManagement.Core.Decorator;
 using AirportManagement.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AirportManagementSystem.Api.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class TicketController : ControllerBase
     {
-        private readonly ITicketService _ticketService;
+        private readonly ProxyTicketService _ticketService;
 
-        public TicketController(ITicketService ticketService)
+        public TicketController(ProxyTicketService ticketService)
         {
             _ticketService = ticketService;
         }
@@ -18,16 +21,30 @@ namespace AirportManagementSystem.Api.Controllers
         [HttpPost("create")]
         public async Task<IActionResult> CreateTicket([FromBody] CreateTicketRequest request)
         {
-            var ticket = await _ticketService.CreateTicketAsync(
-                request.FlightId,
-                request.FirstName,
-                request.LastName,
-                request.PassportNumber,
-                request.MealOption,
-                request.Seat
-            );
+            try
+            {
+                var ticket = await _ticketService.CreateTicketAsync(
+                    request.FlightId,
+                    request.FirstName,
+                    request.LastName,
+                    request.PassportNumber,
+                    request.MealOption,
+                    request.Seat,
+                    request.LuggageWeight
+                );
 
-            return Ok(ticket);
+                ITicketComponent ticketComponent = ticket;
+                if (request.LuggageWeight.HasValue && request.LuggageWeight.Value > 0)
+                {
+                    ticketComponent = new LuggageDecorator(ticketComponent, request.LuggageWeight.Value);
+                }
+
+                return Ok(new { Info = ticketComponent.GetTicketInfo() });
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Unauthorized(new { Error = ex.Message });
+            }
         }
 
         [HttpGet("all")]
@@ -42,6 +59,26 @@ namespace AirportManagementSystem.Api.Controllers
         {
             var clonedTicket = await _ticketService.CloneTicketAsync(ticketId, request.FirstName, request.LastName, request.PassportNumber);
             return Ok(clonedTicket);
+        }
+        
+        [HttpPost("command/create")]
+        public async Task<IActionResult> ExecuteTicketCommand([FromBody] CreateTicketRequest request)
+        {
+            var command = new CreateTicketCommand(
+                _ticketService,
+                request.FlightId,
+                request.FirstName,
+                request.LastName,
+                request.PassportNumber,
+                request.MealOption,
+                request.Seat,
+                request.LuggageWeight
+            );
+
+            var invoker = new CommandInvoker();
+            await invoker.ExecuteCommandAsync(command);
+
+            return Ok("Ticket created with command.");
         }
     }
 }

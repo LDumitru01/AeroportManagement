@@ -2,5 +2,5 @@
 
 public interface IPaymentGateway
 {
-    bool ProccesPayment(double amount, string currency);
+    bool ProcessPayment(double amount, string currency);
 }

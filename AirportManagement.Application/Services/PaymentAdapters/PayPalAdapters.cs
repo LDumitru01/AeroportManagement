@@ -2,7 +2,7 @@
 
 public class PayPalAdapters: IPaymentGateway
 {
-    public bool ProccesPayment(double amount, string currency)
+    public bool ProcessPayment(double amount, string currency)
     {
         
         Console.WriteLine($"Processing payment via PayPal: {amount} {currency}");

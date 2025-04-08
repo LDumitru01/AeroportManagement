@@ -3,6 +3,8 @@ using AirportManagement.Application.Interfaces.IServices;
 using AirportManagement.Core.Builders;
 using AirportManagement.Core.Enums;
 using AirportManagement.Core.Models;
+using AirportManagement.Core.Models.FlyWeightPattern;
+using AirportManagement.Core.Strategy;
 
 namespace AirportManagement.Application.Services
 {
@@ -11,45 +13,52 @@ namespace AirportManagement.Application.Services
         private readonly IFlightRepository _flightRepository;
         private readonly ITicketRepository _ticketRepository;
         private readonly IPassengerRepository _passengerRepository;
+        private readonly IPassengerValidationStrategy _validationStrategy;
+        private readonly IPassengerValidationStrategySelector _strategySelector;
 
-        public TicketService(IFlightRepository flightRepository, ITicketRepository ticketRepository, IPassengerRepository passengerRepository)
+
+        public TicketService(IFlightRepository flightRepository, ITicketRepository ticketRepository, IPassengerRepository passengerRepository, SeatFlyweightFactory seatFlyweightFactory, IPassengerValidationStrategy validationStrategy, IPassengerValidationStrategySelector strategySelector)
         {
             _flightRepository = flightRepository;
             _ticketRepository = ticketRepository;
             _passengerRepository = passengerRepository;
+            _validationStrategy = validationStrategy;
+            _strategySelector = strategySelector;
         }
 
-        public async Task<Ticket> CreateTicketAsync(int flightId, string firstName, string lastName, string passportNumber, MealType mealOption, SeatType seat)
+        public async Task<Ticket> CreateTicketAsync(int flightId, string firstName, string lastName, string passportNumber, MealType mealOption, SeatType seat, double? luggageWeight = null)
         {
+            
             var flight = await _flightRepository.GetFlightByIdAsync(flightId);
             if (flight == null)
-            {
                 throw new ArgumentException("Flight not found.");
-            }
-            var existingPassenger = await _passengerRepository.GetPassengerByPassportAsync(passportNumber);
 
-            Passenger? passenger;
-            if (existingPassenger == null)
+            var passenger = await _passengerRepository.GetPassengerByPassportAsync(passportNumber)
+                            ?? new Passenger(firstName, lastName, passportNumber);
+
+            var validationStrategy = _strategySelector.SelectStrategy(flight);
+
+            if (!await validationStrategy.ValidatePassengerAsync(passenger, flight))
             {
-                passenger = new Passenger(firstName, lastName, passportNumber);
-                await _passengerRepository.AddPassengerAsync(passenger);
-            }
-            else
-            {
-                passenger = existingPassenger;
+                throw new InvalidOperationException("Passenger validation failed for this type of flight.");
             }
             
+            if (passenger.Id == 0)  
+                await _passengerRepository.AddPassengerAsync(passenger);
+
             var ticket = new FlightTicketBuilder()
                 .SetFlight(flight)
                 .SetPassenger(passenger)
                 .SetMealOption(mealOption)
                 .SetSeat(seat)
                 .Build();
+            
+            if (luggageWeight.HasValue)
+                ticket.LuggageWeight = luggageWeight;
 
             await _ticketRepository.AddTicketAsync(ticket);
             return ticket;
         }
-
 
         public async Task<IEnumerable<Ticket>> GetAllTicketsAsync()
         {
@@ -68,6 +77,10 @@ namespace AirportManagement.Application.Services
 
             await _ticketRepository.AddTicketAsync(clonedTicket);
             return clonedTicket;
+        }
+        public async Task DeleteTicketAsync(int ticketId)
+        {
+            await _ticketRepository.DeleteTicketAsync(ticketId);
         }
     }
 }

@@ -11,6 +11,6 @@ public class PeymentService: IPaymentService
 
     public bool PayForTicket(double amount, string currency)
     {
-        return _paymentGateway.ProccesPayment(amount, currency);
+        return _paymentGateway.ProcessPayment(amount, currency);
     }
 }

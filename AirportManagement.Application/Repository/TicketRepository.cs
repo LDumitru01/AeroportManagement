@@ -37,5 +37,15 @@ public class TicketRepository : ITicketRepository
             .Include(t => t.Passenger)
             .FirstOrDefaultAsync(t => t.Id == ticketId);
     }
+    
+    public async Task DeleteTicketAsync(int ticketId)
+    {
+        var ticket = await _context.Tickets.FindAsync(ticketId);
+        if (ticket != null)
+        {
+            _context.Tickets.Remove(ticket);
+            await _context.SaveChangesAsync();
+        }
+    }
 
 }

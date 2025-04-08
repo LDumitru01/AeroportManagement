@@ -4,7 +4,7 @@ using AirportManagement.Core.Enums;
 
 namespace AirportManagement.Core.Models
 {
-    public class Flight
+    public partial class Flight
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -13,12 +13,15 @@ namespace AirportManagement.Core.Models
         public string Destination { get; set; }
         public DateTime DepartureTime { get; set; }
         public FlightStatus Status { get; set; }
-        
-        public Flight(string flightNumber, string destination, DateTime departureTime)
+        public decimal Price { get; set; }
+        public bool IsInternational { get; set; }
+
+        public Flight(string flightNumber, string destination, DateTime departureTime, decimal price)
         {
             FlightNumber = flightNumber;
             Destination = destination;
             DepartureTime = departureTime;
+            Price = price;
         }
     }
 }

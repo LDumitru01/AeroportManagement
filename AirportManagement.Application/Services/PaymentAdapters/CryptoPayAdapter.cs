@@ -2,7 +2,7 @@
 
 public class CryptoPayAdapter : IPaymentGateway
 {
-    public bool ProccesPayment(double amount, string currency)
+    public bool ProcessPayment(double amount, string currency)
     {
         
         Console.WriteLine($"Processing payment via CryptoPay: {amount} {currency}");

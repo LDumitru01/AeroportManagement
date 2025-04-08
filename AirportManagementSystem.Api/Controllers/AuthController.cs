@@ -1,4 +1,5 @@
 ﻿using AirportManagement.Application.Interfaces.IServices;
+using AirportManagement.Application.Services.Session;
 using AirportManagement.Core.Models.Auth;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
@@ -28,10 +29,12 @@ public class AuthController : ControllerBase
     {
         var user = await _authService.LoginAsync(request.Email, request.Password);
         if (user == null)
-        {
-            return Unauthorized("Invalid credentials.");
-        }
+            return Unauthorized("Invalid credentials");
 
-        return Ok(user);
+        UserSessionManager.Instance.Login();
+        return Ok("Login successful");
     }
+    
+    
+    
 }

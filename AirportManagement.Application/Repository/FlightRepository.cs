@@ -29,5 +29,11 @@ namespace AirportManagement.Application.Repository
         {
             return await _context.Flights.FindAsync(id);
         }
+        
+        public async Task UpdateFlightAsync(Flight flight)
+        {
+            _context.Flights.Update(flight);
+            await _context.SaveChangesAsync();
+        }
     }
 }

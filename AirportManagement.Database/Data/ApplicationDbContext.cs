@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AirportManagement.Core.CompositePattern;
+using Microsoft.EntityFrameworkCore;
 using AirportManagement.Core.Models;
 using AirportManagement.Core.Models.Auth;
 
@@ -15,6 +16,7 @@ namespace AirportManagement.Database.Data
         public DbSet<Passenger> Passengers { get; set; }
         public DbSet<Ticket> Tickets { get; set; } 
         public DbSet<User> Users { get; set; }
+        
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
