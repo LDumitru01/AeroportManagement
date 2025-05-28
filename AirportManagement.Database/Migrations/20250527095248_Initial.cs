@@ -21,7 +21,8 @@ namespace AirportManagement.Database.Migrations
                     Destination = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DepartureTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    IsInternational = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -36,7 +37,8 @@ namespace AirportManagement.Database.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PassportNumber = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    PassportNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsVip = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -47,12 +49,12 @@ namespace AirportManagement.Database.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Role = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -68,7 +70,12 @@ namespace AirportManagement.Database.Migrations
                     FlightId = table.Column<int>(type: "int", nullable: true),
                     PassengerId = table.Column<int>(type: "int", nullable: true),
                     Seat = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    MealOption = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    MealOption = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LuggageWeight = table.Column<double>(type: "float", nullable: true),
+                    IsPaid = table.Column<bool>(type: "bit", nullable: false),
+                    PaidAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    PaymentMethod = table.Column<int>(type: "int", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {

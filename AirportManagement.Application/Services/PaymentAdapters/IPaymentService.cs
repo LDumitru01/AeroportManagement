@@ -1,6 +1,16 @@
 ﻿namespace AirportManagement.Application.Services.PaymentAdapters;
 
-public interface IPaymentService
+public class PaymentService
 {
-    bool PayForTicket(double amount, string currency);
+    private readonly IPaymentGateway _gateway;
+
+    public PaymentService(IPaymentGateway gateway)
+    {
+        _gateway = gateway;
+    }
+
+    public async Task<bool> PayForTicket(int ticketId, double amount, string currency)
+    {
+        return await _gateway.ProcessPaymentAsync(ticketId, amount, currency);
+    }
 }

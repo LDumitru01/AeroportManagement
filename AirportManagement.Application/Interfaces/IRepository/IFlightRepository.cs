@@ -6,6 +6,6 @@ public interface IFlightRepository
 {
     Task<List<Flight>> GetAllFlightsAsync();
     Task AddFlightAsync(Flight flight);
-    Task<Flight?> GetFlightByIdAsync(int id);
+    Task<Flight?> GetFlightByNumberAsync(string number);
     Task UpdateFlightAsync(Flight flight);
 }

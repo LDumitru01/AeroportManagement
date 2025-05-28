@@ -29,9 +29,9 @@ namespace AirportManagement.Application.Services
             return flight;
         }
         
-        public async Task<Flight?> GetFlightByIdAsync(int id)
+        public async Task<Flight?> GetFlightByNumberAsync(string number)
         {
-            return await _flightRepository.GetFlightByIdAsync(id);
+            return await _flightRepository.GetFlightByNumberAsync(number);
         }
         public async Task UpdateFlightAsync(Flight flight)
         {
@@ -44,9 +44,9 @@ namespace AirportManagement.Application.Services
             return allFlights.Where(f => f.Status == FlightStatus.Scheduled);
         }
         
-        public async Task UpdateFlightStatusAsync(int flightId, FlightStatus newStatus)
+        public async Task UpdateFlightStatusAsync(string flightNumber, FlightStatus newStatus)
         {
-            var flight = await _flightRepository.GetFlightByIdAsync(flightId);
+            var flight = await _flightRepository.GetFlightByNumberAsync(flightNumber);
             if (flight == null)
                 throw new Exception("Flight not found");
 
@@ -62,21 +62,21 @@ namespace AirportManagement.Application.Services
             subject.Notify(newStatus.ToString()); 
         }
         
-        public async Task SaveFlightStateAsync(int flightId)
+        public async Task SaveFlightStateAsync(string flightNumber)
         {
-            var flight = await _flightRepository.GetFlightByIdAsync(flightId);
+            var flight = await _flightRepository.GetFlightByNumberAsync(flightNumber);
             if (flight == null) throw new Exception("Flight not found");
 
             var manager = new FlightStateManager(flight);
             _flightHistoryManager.SaveState(manager);
         }
 
-        public async Task RestoreFlightStateAsync(int flightId)
+        public async Task RestoreFlightStateAsync(string flightNumber)
         {
             var memento = _flightHistoryManager.RestoreLastState();
             if (memento == null) throw new Exception("No saved state");
 
-            var flight = await _flightRepository.GetFlightByIdAsync(flightId);
+            var flight = await _flightRepository.GetFlightByNumberAsync(flightNumber);
             if (flight == null) throw new Exception("Flight not found");
 
             flight.FlightNumber = memento.FlightNumber;

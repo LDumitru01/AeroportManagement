@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using AirportManagement.Core.Enums;
+using AirportManagement.Core.Visitor;
 
 namespace AirportManagement.Core.Models
 {
-    public partial class Flight
+    public partial class Flight : IVisitable
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -22,6 +23,11 @@ namespace AirportManagement.Core.Models
             Destination = destination;
             DepartureTime = departureTime;
             Price = price;
+        }
+
+        public void Accept(IVisitor visitor)
+        {
+            visitor.VisitFlight(this);
         }
     }
 }

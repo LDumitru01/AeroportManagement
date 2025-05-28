@@ -1,0 +1,63 @@
+.checkin-container {
+  margin: 0 auto;
+  padding: 30px;
+  max-width: 90%;
+  background-color: #f6f9ff;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0, 50, 120, 0.1);
+}
+
+.checkin-title {
+  font-size: 26px;
+  font-weight: bold;
+  color: #123c78;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.checkin-search {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 25px;
+  gap: 10px;
+}
+
+.checkin-search input {
+  padding: 8px 12px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  width: 250px;
+}
+
+.checkin-search button {
+  padding: 8px 16px;
+  background-color: #0057d9;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.checkin-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.checkin-table th,
+.checkin-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+
+.checkin-table th {
+  background-color: #0057d9;
+  color: white;
+}
+
+.checkin-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}

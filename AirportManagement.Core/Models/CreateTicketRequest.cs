@@ -4,9 +4,9 @@ namespace AirportManagement.Core.Models;
 
 public class CreateTicketRequest
 {
-    public CreateTicketRequest(int flightId, string firstName, string lastName, string passportNumber, SeatType seat, MealType mealOption, double? luggageWeight)
+    public CreateTicketRequest(string flightNumber, string firstName, string lastName, string passportNumber, SeatType seat, MealType mealOption, double? luggageWeight)
     {
-        FlightId = flightId;
+        FlightNumber = flightNumber;
         FirstName = firstName;
         LastName = lastName;
         PassportNumber = passportNumber;
@@ -15,7 +15,7 @@ public class CreateTicketRequest
         LuggageWeight = luggageWeight;
     }
 
-    public int FlightId { get; set; }
+    public string FlightNumber { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string PassportNumber { get; set; }

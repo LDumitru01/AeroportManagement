@@ -5,9 +5,9 @@ namespace AirportManagement.Application.Facade;
 public class BookingRequest
 {
     [JsonConstructor]
-    public BookingRequest(int flightId, string firstName, string lastName, string passportNumber, double amountToPay, string paymentMethod)
+    public BookingRequest(string flightNumber, string firstName, string lastName, string passportNumber, double amountToPay, string paymentMethod)
     {
-        FlightId = flightId;
+        FlightNumber= flightNumber;
         FirstName = firstName;
         LastName = lastName;
         PassportNumber = passportNumber;
@@ -15,7 +15,7 @@ public class BookingRequest
         PaymentMethod = paymentMethod;
     }
 
-    public int FlightId { get; set; }
+    public string FlightNumber { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string PassportNumber { get; set; }

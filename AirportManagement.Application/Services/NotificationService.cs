@@ -12,6 +12,6 @@ public class NotificationService : INotificationService
             : new SmsNotificationSender();
 
         var notification = new FlightNotification(sender);
-        notification.Notify(userContact, message);
+        notification.NotifyAsync(userContact, message);
     }
 }

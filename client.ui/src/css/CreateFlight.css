@@ -1,0 +1,118 @@
+.create-flight-container {
+  max-width: 500px;
+  margin: 40px auto;
+   background: linear-gradient(to bottom, #bde3fa, #67c8f1);
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+.animated-waves-bg {
+  position: fixed;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, #bde3fa, #67c8f1);
+  overflow: hidden;
+}
+
+.animated-waves-bg::after {
+  content: "";
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  background: url("data:image/svg+xml,%3Csvg width='1440' height='363' viewBox='0 0 1440 363' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0H1440V306.166C1228.67 372.466 992 263.187 720 263.187C448 263.187 211.333 372.466 0 306.166V0Z' fill='%23ffffff' fill-opacity='0.2'/%3E%3C/svg%3E")
+    repeat-x;
+  animation: waveMove 12s linear infinite;
+  opacity: 0.5;
+  top: 0;
+  left: 0;
+}
+
+@keyframes waveMove {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+
+
+
+.create-flight-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #182a73;
+}
+
+.create-flight-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.create-flight-form input[type="datetime-local"] {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.create-flight-form input,
+.create-flight-form select {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.create-flight-form button {
+  padding: 12px;
+   background: linear-gradient(135deg, #8ba0e2, #25a381);
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.create-flight-form button:hover {
+  background-color: #167d95;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+}
+
+
+.flying-plane {
+  position: fixed;
+  top: 20%;
+  left: -100px;
+  width: 70px;
+  z-index: 3;
+  pointer-events: none;
+  animation: flyLinear 20s linear infinite;
+}
+
+@keyframes flyLinear {
+  0% {
+    transform: translateX(-100px) rotate(5deg);
+    opacity: 0.3;
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(110vw) rotate(5deg);
+    opacity: 0.3;
+  }
+}

@@ -2,5 +2,5 @@
 
 public interface INotificationSender
 {
-    void Send (string to, string message);
+    public Task SendAsync (string to, string message);
 }

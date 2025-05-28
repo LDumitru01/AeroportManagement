@@ -8,17 +8,20 @@ public class CreateTicketCommand : ICommand
 {
     private readonly ITicketService _ticketService;
     private Ticket? _createdTicket;
-    private readonly int _flightId;
+    private readonly string _flightNumber;
     private readonly string _firstName;
     private readonly string _lastName;
     private readonly string _passportNumber;
     private readonly MealType _mealOption;
     private readonly SeatType _seat;
     private readonly double? _luggageWeight;
+    private readonly string _userEmail;
 
     public CreateTicketCommand(
+        
         ITicketService ticketService,
-        int flightId,
+        string userEmail,
+        string flightNumber,
         string firstName,
         string lastName,
         string passportNumber,
@@ -27,7 +30,8 @@ public class CreateTicketCommand : ICommand
         double? luggageWeight = null)
     {
         _ticketService = ticketService;
-        _flightId = flightId;
+        _userEmail = userEmail;
+        _flightNumber = flightNumber;
         _firstName = firstName;
         _lastName = lastName;
         _passportNumber = passportNumber;
@@ -39,7 +43,7 @@ public class CreateTicketCommand : ICommand
     public async Task ExecuteAsync()
     {
         _createdTicket = await _ticketService.CreateTicketAsync(
-            _flightId, _firstName, _lastName, _passportNumber, _mealOption, _seat, _luggageWeight);
+            _userEmail,_flightNumber, _firstName, _lastName, _passportNumber, _mealOption, _seat, _luggageWeight);
     }
 
     public async Task UndoAsync()

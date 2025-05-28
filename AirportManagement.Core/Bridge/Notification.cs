@@ -1,4 +1,4 @@
-﻿namespace AirportManagement.Core.Bridge;
+﻿using AirportManagement.Core.Bridge;
 
 public abstract class Notification
 {
@@ -8,6 +8,6 @@ public abstract class Notification
     {
         _sender = sender;
     }
-    
-    public abstract void Notify(string to, string message);
+
+    public abstract Task NotifyAsync(string destination, string content);
 }

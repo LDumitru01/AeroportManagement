@@ -1,0 +1,86 @@
+.create-ticket-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 90vh;
+  padding: 10px;
+}
+
+.animated-waves-bg {
+  position: fixed;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, #bde3fa, #67c8f1);
+  overflow: hidden;
+}
+
+.animated-waves-bg::after {
+  content: "";
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  background: url("data:image/svg+xml,%3Csvg width='1440' height='363' viewBox='0 0 1440 363' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0H1440V306.166C1228.67 372.466 992 263.187 720 263.187C448 263.187 211.333 372.466 0 306.166V0Z' fill='%23ffffff' fill-opacity='0.2'/%3E%3C/svg%3E")
+    repeat-x;
+  animation: waveMove 12s linear infinite;
+  opacity: 0.5;
+  top: 0;
+  left: 0;
+}
+
+.create-ticket-card {
+  background: linear-gradient(135deg, #8ba0e2, #25a381);
+  padding: 25px 30px;
+  width: 100%;
+  max-width: 500px;
+  border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', sans-serif;
+  overflow-y: auto;
+  max-height: 90vh;
+}
+
+.create-ticket-card h2 {
+  text-align: center;
+  margin-bottom: 15px;
+  font-size: 20px;
+  color: #0a2e5c;
+}
+
+.form-group {
+  margin-bottom: 10px;
+}
+
+.form-group label {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 4px;
+  display: block;
+  color: #1d3557;
+}
+
+.form-group input,
+.form-group select {
+  padding: 7px 9px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 13.5px;
+  width: 100%;
+}
+
+.submit-btn {
+  margin-top: 15px;
+  padding: 10px;
+  font-size: 15px;
+  background-color: #1976d2;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  width: 100%;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.submit-btn:hover {
+  background-color: #125ca0;
+}

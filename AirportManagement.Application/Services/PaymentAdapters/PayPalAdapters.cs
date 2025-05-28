@@ -1,11 +1,33 @@
-﻿namespace AirportManagement.Application.Services.PaymentAdapters;
+﻿using AirportManagement.Application.Interfaces.IRepository;
+using AirportManagement.Core.Enums;
 
-public class PayPalAdapters: IPaymentGateway
+namespace AirportManagement.Application.Services.PaymentAdapters;
+
+public class PayPalAdapters : IPaymentGateway
 {
-    public bool ProcessPayment(double amount, string currency)
+    private readonly ITicketRepository _ticketRepository;
+
+    public PayPalAdapters(ITicketRepository ticketRepository)
     {
-        
-        Console.WriteLine($"Processing payment via PayPal: {amount} {currency}");
+        _ticketRepository = ticketRepository;
+    }
+
+    public async Task<bool> ProcessPaymentAsync(int ticketId, double amount, string currency)
+    {
+        var ticket = await _ticketRepository.GetTicketByIdAsync(ticketId);
+        if (ticket == null || ticket.IsPaid)
+            return false;
+
+        // Verifică dacă suma introdusă este egală cu prețul real
+        if (ticket.Flight != null && (decimal)amount != ticket.Flight.Price)
+            return false;
+
+        ticket.IsPaid = true;
+        ticket.PaidAmount = (decimal)amount;
+        ticket.PaymentMethod = PaymentMethod.PayPal;
+
+        await _ticketRepository.UpdateAsync(ticket);
         return true;
     }
+
 }

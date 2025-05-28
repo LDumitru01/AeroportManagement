@@ -1,6 +1,6 @@
 ﻿namespace AirportManagement.Application.Services.PaymentAdapters;
 
-public class PeymentService: IPaymentService
+public class PeymentService
 {
     private readonly IPaymentGateway _paymentGateway;
 
@@ -9,8 +9,8 @@ public class PeymentService: IPaymentService
         _paymentGateway = paymentGateway;
     }
 
-    public bool PayForTicket(double amount, string currency)
+    public Task<bool> PayForTicket(int ticketId, double amount, string currency)
     {
-        return _paymentGateway.ProcessPayment(amount, currency);
+        return _paymentGateway.ProcessPaymentAsync(ticketId, amount, currency);
     }
 }

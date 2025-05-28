@@ -8,4 +8,6 @@ public interface ITicketRepository
     Task<IEnumerable<Ticket>> GetAllTicketsAsync();
     Task<Ticket?> GetTicketByIdAsync(int ticketId);
     Task DeleteTicketAsync(int ticketId);
+    Task UpdateAsync(Ticket ticket);
+    Task<List<Ticket>> GetTicketsByEmailAsync(string email);
 }

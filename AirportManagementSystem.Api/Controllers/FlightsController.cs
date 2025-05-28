@@ -21,16 +21,16 @@ namespace AirportManagementSystem.Api.Controllers
         }
 
         [HttpPatch("set-international/{id}")]
-        public async Task<IActionResult> SetInternational(int id, [FromQuery] bool isInternational)
+        public async Task<IActionResult> SetInternational(string number, [FromQuery] bool isInternational)
         {
-            var flight = await _flightService.GetFlightByIdAsync(id);
+            var flight = await _flightService.GetFlightByNumberAsync(number);
             if (flight == null)
                 return NotFound("Flight not found");
 
             flight.IsInternational = isInternational;
             await _flightService.UpdateFlightAsync(flight);
 
-            return Ok(new { Message = $"Flight {id} updated with IsInternational = {isInternational}" });
+            return Ok(new { Message = $"Flight {number} updated with IsInternational = {isInternational}" });
         }
 
         [HttpGet]
@@ -57,7 +57,7 @@ namespace AirportManagementSystem.Api.Controllers
         [HttpPut("update-status")]
         public async Task<IActionResult> UpdateFlightStatus([FromBody] UpdateFlightStatusRequest request)
         {
-            var flight = await _flightService.GetFlightByIdAsync(request.FlightId);
+            var flight = await _flightService.GetFlightByNumberAsync(request.FlightNumber);
             if (flight == null)
                 return NotFound("Flight not found.");
 
@@ -77,7 +77,7 @@ namespace AirportManagementSystem.Api.Controllers
             if (memento == null)
                 return BadRequest("No saved state to restore.");
 
-            var flight = await _flightService.GetFlightByIdAsync(memento.Id);
+            var flight = await _flightService.GetFlightByNumberAsync(memento.Number);
             if (flight == null)
                 return NotFound("Flight not found.");
 

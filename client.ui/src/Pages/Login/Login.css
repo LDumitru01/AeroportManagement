@@ -1,0 +1,82 @@
+/* Login.css */
+
+.animated-waves-bg {
+  position: fixed;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, #bde3fa, #67c8f1);
+  overflow: hidden;
+}
+
+.animated-waves-bg::after {
+  content: "";
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  background: url("data:image/svg+xml,%3Csvg width='1440' height='363' viewBox='0 0 1440 363' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0H1440V306.166C1228.67 372.466 992 263.187 720 263.187C448 263.187 211.333 372.466 0 306.166V0Z' fill='%23ffffff' fill-opacity='0.2'/%3E%3C/svg%3E")
+    repeat-x;
+  animation: waveMove 12s linear infinite;
+  opacity: 0.5;
+  top: 0;
+  left: 0;
+}
+
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(to bottom, #bde3fa, #67c8f1);
+    padding: 20px;
+  }
+  
+  .login-form {
+    background: linear-gradient(to bottom, #bde3fa, #296b87);
+    padding: 40px 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+  }
+  
+  .login-form h2 {
+    margin-bottom: 25px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+  }
+  
+  .login-form input {
+    width: 100%;
+    padding: 12px 15px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    box-sizing: border-box;
+  }
+  
+  .login-form input:focus {
+    border-color: #4a90e2;
+    outline: none;
+  }
+  
+  .login-form button {
+    width: 100%;
+    padding: 12px;
+    background-color: #4a90e2;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .login-form button:hover {
+    background-color: #357ab8;
+  }
+  

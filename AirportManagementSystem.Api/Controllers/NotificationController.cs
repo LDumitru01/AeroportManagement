@@ -1,23 +1,31 @@
-﻿using AirportManagement.Application.Interfaces.IServices;
+﻿using AirportManagement.Core.Bridge;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AirportManagementSystem.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class NotificationController : ControllerBase
+public class NotificationsController : ControllerBase
 {
-    private readonly INotificationService _notificationService;
-
-    public NotificationController(INotificationService notificationService)
+    [HttpPost("send")]
+    public async Task<IActionResult> Send([FromBody] SendMessageRequest request)
     {
-        _notificationService = notificationService;
+        var sender = new EmailNotificationSender();
+        var notification = new FlightNotification(sender);
+
+        await notification.NotifyAsync(request.Destination, request.Message);
+        return Ok();
+    }
+}
+
+public class SendMessageRequest
+{
+    public SendMessageRequest(string destination, string message)
+    {
+        Destination = destination;
+        Message = message;
     }
 
-    [HttpPost("flight")]
-    public IActionResult SendFlightNotification([FromQuery] string to, [FromQuery] string message, [FromQuery] bool useEmail = true)
-    {
-        _notificationService.NotifyFlightChange(to, message, useEmail);
-        return Ok("Notification sent");
-    }
+    public string Destination { get; set; }
+    public string Message { get; set; }
 }

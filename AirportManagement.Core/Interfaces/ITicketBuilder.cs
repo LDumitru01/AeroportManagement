@@ -9,5 +9,6 @@ public interface ITicketBuilder
     ITicketBuilder SetMealOption(MealType mealOption);
     ITicketBuilder SetPassenger(Passenger? passenger);
     ITicketBuilder SetSeat(SeatType seat);
+    ITicketBuilder SetEmail(string email);
     Ticket Build();
 }

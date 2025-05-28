@@ -1,6 +1,6 @@
 ﻿namespace AirportManagement.Core.Enums;
 
-public enum FlightStatus //explicatie la fiecare ce inseamna
+public enum FlightStatus
 {
     Scheduled, //Zborul este programat
     OnTime, //Zborul pleaca la timp

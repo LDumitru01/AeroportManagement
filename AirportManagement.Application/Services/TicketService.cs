@@ -1,10 +1,12 @@
-﻿using AirportManagement.Application.Interfaces.IRepository;
+﻿using System.Security.Claims;
+using AirportManagement.Application.Interfaces.IRepository;
 using AirportManagement.Application.Interfaces.IServices;
 using AirportManagement.Core.Builders;
 using AirportManagement.Core.Enums;
 using AirportManagement.Core.Models;
 using AirportManagement.Core.Models.FlyWeightPattern;
 using AirportManagement.Core.Strategy;
+using Microsoft.AspNetCore.Http;
 
 namespace AirportManagement.Application.Services
 {
@@ -15,21 +17,30 @@ namespace AirportManagement.Application.Services
         private readonly IPassengerRepository _passengerRepository;
         private readonly IPassengerValidationStrategy _validationStrategy;
         private readonly IPassengerValidationStrategySelector _strategySelector;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
 
-        public TicketService(IFlightRepository flightRepository, ITicketRepository ticketRepository, IPassengerRepository passengerRepository, SeatFlyweightFactory seatFlyweightFactory, IPassengerValidationStrategy validationStrategy, IPassengerValidationStrategySelector strategySelector)
+        public TicketService(IFlightRepository flightRepository, ITicketRepository ticketRepository, IPassengerRepository passengerRepository, SeatFlyweightFactory seatFlyweightFactory, IPassengerValidationStrategy validationStrategy, IPassengerValidationStrategySelector strategySelector, IHttpContextAccessor httpContextAccessor)
         {
             _flightRepository = flightRepository;
             _ticketRepository = ticketRepository;
             _passengerRepository = passengerRepository;
             _validationStrategy = validationStrategy;
             _strategySelector = strategySelector;
+            _httpContextAccessor = httpContextAccessor;
         }
-
-        public async Task<Ticket> CreateTicketAsync(int flightId, string firstName, string lastName, string passportNumber, MealType mealOption, SeatType seat, double? luggageWeight = null)
+        
+        public async Task<Ticket> CreateTicketAsync(
+            string userEmail,
+            string flightNumber,
+            string firstName,
+            string lastName,
+            string passportNumber,
+            MealType mealOption,
+            SeatType seat,
+            double? luggageWeight = null)
         {
-            
-            var flight = await _flightRepository.GetFlightByIdAsync(flightId);
+            var flight = await _flightRepository.GetFlightByNumberAsync(flightNumber);
             if (flight == null)
                 throw new ArgumentException("Flight not found.");
 
@@ -39,11 +50,9 @@ namespace AirportManagement.Application.Services
             var validationStrategy = _strategySelector.SelectStrategy(flight);
 
             if (!await validationStrategy.ValidatePassengerAsync(passenger, flight))
-            {
                 throw new InvalidOperationException("Passenger validation failed for this type of flight.");
-            }
-            
-            if (passenger.Id == 0)  
+
+            if (passenger.Id == 0)
                 await _passengerRepository.AddPassengerAsync(passenger);
 
             var ticket = new FlightTicketBuilder()
@@ -51,8 +60,9 @@ namespace AirportManagement.Application.Services
                 .SetPassenger(passenger)
                 .SetMealOption(mealOption)
                 .SetSeat(seat)
+                .SetEmail(userEmail)
                 .Build();
-            
+
             if (luggageWeight.HasValue)
                 ticket.LuggageWeight = luggageWeight;
 

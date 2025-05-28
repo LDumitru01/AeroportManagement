@@ -1,3 +1,5 @@
+using System.Text;
+using AirportManagement.Application.ChainOfResposibilityApp;
 using AirportManagement.Application.Command;
 using AirportManagement.Application.Facade;
 using AirportManagement.Application.Interfaces.IRepository;
@@ -5,13 +7,17 @@ using AirportManagement.Application.Interfaces.IServices;
 using AirportManagement.Application.Repository;
 using AirportManagement.Application.Services;
 using AirportManagement.Application.Services.Proxy;
+using AirportManagement.Core.Mediator;
 using AirportManagement.Core.Memento;
 using AirportManagement.Core.Models.FlyWeightPattern;
 using AirportManagement.Core.Strategy;
 using AirportManagement.Database.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 var builder = WebApplication.CreateBuilder(args);
+
 
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -21,7 +27,15 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddScoped<IPassengerRepository, PassengerRepository>();
 builder.Services.AddScoped<IFlightRepository, FlightRepository>();
 builder.Services.AddScoped<ITicketRepository, TicketRepository>();
-builder.Services.AddScoped<ITicketService, TicketService>();
+builder.Services.AddScoped<TicketService>();
+builder.Services.AddScoped<ITicketService>(provider =>
+{
+    var realService = provider.GetRequiredService<TicketService>();
+    var httpContext = provider.GetRequiredService<IHttpContextAccessor>();
+    var ticketRepository = provider.GetRequiredService<TicketRepository>();
+    return new ProxyTicketService(realService, httpContext, ticketRepository);
+});
+
 builder.Services.AddScoped<IFlightService, FlightService>();
 builder.Services.AddScoped<IReservationService, ReservationService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
@@ -46,6 +60,76 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddScoped<PassengerValidationHandler>();
+builder.Services.AddScoped<LuggageValidationHandler>();
+builder.Services.AddScoped<SeatAvailabilityHandler>();
+builder.Services.AddSingleton<IMediator, EmergencyMediator>();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<ITicketRepository, TicketRepository>();
+builder.Services.AddScoped<TicketRepository>();
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options => {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!)
+            )
+        };
+    });
+
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new() { Title = "Airport API", Version = "v1" });
+
+    // 👇 JWT bearer definition
+    c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+        Description = "Introduceți tokenul JWT așa: `Bearer <token>`"
+    });
+
+    // 👇 obligatoriu pentru toate endpoint-urile
+    c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+    {
+        {
+            new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+            {
+                Reference = new Microsoft.OpenApi.Models.OpenApiReference
+                {
+                    Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
+});
+
+builder.Services.AddAuthorization();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
+
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -58,7 +142,12 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+
+app.UseCors("AllowAll");
 app.UseHttpsRedirection();
+app.UseDeveloperExceptionPage();
+
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 app.Run();

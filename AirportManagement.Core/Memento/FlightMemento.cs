@@ -4,16 +4,16 @@ namespace AirportManagement.Core.Memento;
 
 public class FlightMemento
 {
-    public FlightMemento(FlightStatus status, DateTime departureTime, string flightNumber, string destination, int id)
+    public FlightMemento(FlightStatus status, DateTime departureTime, string flightNumber, string destination, string number)
     {
         Status = status;
         DepartureTime = departureTime;
         FlightNumber = flightNumber;
         Destination = destination;
-        Id = id;
+        Number = number;
     }
 
-    public int Id { get;}
+    public string Number { get;}
     public string FlightNumber { get; }
     public string Destination { get; }
     public DateTime DepartureTime { get; }

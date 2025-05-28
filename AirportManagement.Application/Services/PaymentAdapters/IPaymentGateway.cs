@@ -2,5 +2,5 @@
 
 public interface IPaymentGateway
 {
-    bool ProcessPayment(double amount, string currency);
+    Task<bool> ProcessPaymentAsync(int ticketId, double amount, string currency);
 }

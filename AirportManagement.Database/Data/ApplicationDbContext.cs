@@ -1,5 +1,4 @@
-﻿using AirportManagement.Core.CompositePattern;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using AirportManagement.Core.Models;
 using AirportManagement.Core.Models.Auth;
 
@@ -26,6 +25,9 @@ namespace AirportManagement.Database.Data
             modelBuilder.Entity<Ticket>()
                 .Property(t => t.Seat)
                 .HasConversion<string>();
+            modelBuilder.Entity<User>()
+                .Property(u => u.Id)
+                .HasDefaultValueSql("NEWID()");
             
             base.OnModelCreating(modelBuilder);
         }

@@ -5,21 +5,20 @@
 namespace AirportManagement.Database.Migrations
 {
     /// <inheritdoc />
-    public partial class AddIsInternationalToFlight : Migration
+    public partial class AddCheckInFieldsToTickets : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<bool>(
-                name: "IsVip",
-                table: "Passengers",
-                type: "bit",
-                nullable: false,
-                defaultValue: false);
+            migrationBuilder.AddColumn<string>(
+                name: "CheckInType",
+                table: "Tickets",
+                type: "nvarchar(max)",
+                nullable: true);
 
             migrationBuilder.AddColumn<bool>(
-                name: "IsInternational",
-                table: "Flights",
+                name: "IsCheckedIn",
+                table: "Tickets",
                 type: "bit",
                 nullable: false,
                 defaultValue: false);
@@ -29,12 +28,12 @@ namespace AirportManagement.Database.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "IsVip",
-                table: "Passengers");
+                name: "CheckInType",
+                table: "Tickets");
 
             migrationBuilder.DropColumn(
-                name: "IsInternational",
-                table: "Flights");
+                name: "IsCheckedIn",
+                table: "Tickets");
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using AirportManagement.Application.Services.PaymentAdapters;
+﻿using AirportManagement.Application.Interfaces.IRepository;
+using AirportManagement.Application.Models;
+using AirportManagement.Application.Services.PaymentAdapters;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AirportManagementSystem.Api.Controllers;
@@ -7,29 +9,29 @@ namespace AirportManagementSystem.Api.Controllers;
 [Route("api/payments")]
 public class PaymentController : ControllerBase
 {
-    [HttpPost("pay")]
-    public IActionResult Pay([FromQuery] double amount, [FromQuery] string currency, [FromQuery] string method)
+    private readonly ITicketRepository _ticketRepository;
+
+    public PaymentController(ITicketRepository ticketRepository)
     {
-        IPaymentGateway paymentGateway;
-        
-        switch (method.ToLower())
+        _ticketRepository = ticketRepository;
+    }
+
+    [HttpPost("pay")]
+    public async Task<IActionResult> PayForTicket([FromBody] PaymentRequestDto dto)
+    {
+        IPaymentGateway gateway = dto.Method.ToLower() switch
         {
-            case "paypal":
-                paymentGateway = new PayPalAdapters();
-                break;
-            case "CryptoPay":
-                paymentGateway = new CryptoPayAdapter();
-                break;
-            case "googlepay":
-                paymentGateway = new GooglePayAdapter();
-                break;
-            default:
-                return BadRequest("Invalid payment method.");
-        }
+            "paypal" => new PayPalAdapters(_ticketRepository),
+            "googlepay" => new GooglePayAdapter(_ticketRepository),
+            "crypto" => new CryptoPayAdapter(_ticketRepository),
+            _ => throw new ArgumentException("Metodă invalidă")
+        };
 
-        var paymentService = new PeymentService(paymentGateway);
-        bool success = paymentService.PayForTicket(amount, currency);
+        var paymentService = new PaymentService(gateway);
+        var success = await paymentService.PayForTicket(dto.TicketId, dto.Amount, dto.Currency);
 
-        return success ? Ok("Payment Successful") : BadRequest("Payment Failed");
+        return success
+            ? Ok("Plata reușită!")
+            : BadRequest("Eroare la plată.");
     }
 }

@@ -1,6 +1,8 @@
-﻿namespace AirportManagement.Core.Models
+﻿using AirportManagement.Core.Visitor;
+
+namespace AirportManagement.Core.Models
 {
-    public class Passenger
+    public class Passenger : IVisitable
     {
         public int Id { get; set; }
         public string FirstName { get; set; }
@@ -13,6 +15,11 @@
             FirstName = firstName;
             LastName = lastName;
             PassportNumber = passportNumber;
+        }
+
+        public void Accept(IVisitor visitor)
+        {
+            visitor.VisitPassenger(this);
         }
     }
 }

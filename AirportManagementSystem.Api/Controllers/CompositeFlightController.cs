@@ -15,9 +15,9 @@ public class CompositeFlightController : ControllerBase
     }
 
     [HttpPost("create")]
-    public async Task<IActionResult> CreateComposite([FromBody] List<int> flightIds)
+    public async Task<IActionResult> CreateComposite([FromBody] List<string> flightNumbers)
     {
-        var composite = await _compositeFlightService.BuildCompositeFlightAsync(flightIds);
+        var composite = await _compositeFlightService.BuildCompositeFlightAsync(flightNumbers);
         return Ok(new
         {
             details = composite.GetFlightDetails(),

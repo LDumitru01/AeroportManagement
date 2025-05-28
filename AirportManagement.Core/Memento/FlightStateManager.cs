@@ -13,7 +13,7 @@ public class FlightStateManager
 
     public FlightMemento SaveState()
     {
-        return new FlightMemento(_flight.Status, _flight.DepartureTime, _flight.FlightNumber, _flight.Destination, _flight.Id);
+        return new FlightMemento(_flight.Status, _flight.DepartureTime, _flight.FlightNumber, _flight.Destination, _flight.FlightNumber);
     }
 
     public void RestoreState(FlightMemento memento)

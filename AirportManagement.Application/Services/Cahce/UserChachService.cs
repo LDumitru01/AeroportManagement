@@ -10,16 +10,16 @@ namespace AirportManagement.Application.Services.Cahce;
 public class UserCacheService
     {
         private static UserCacheService? _instance;
-        private static readonly object _lock = new();
+        private static readonly object Lock = new();
         
-        private readonly ConcurrentDictionary<int, User> _cache;
+        private readonly ConcurrentDictionary<Guid, User?> _cache;
         private readonly IUserRepository _userRepository;
         private readonly Timer _cacheExpirationTimer;
 
         private UserCacheService(IUserRepository userRepository)
         {
             _userRepository = userRepository;
-            _cache = new ConcurrentDictionary<int, User>();
+            _cache = new ConcurrentDictionary<Guid, User?>();
 
             _cacheExpirationTimer = new Timer(ClearCache, null, TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(5));
         }
@@ -28,7 +28,7 @@ public class UserCacheService
         {
             if (_instance == null)
             {
-                lock (_lock)
+                lock (Lock)
                 {
                     if (_instance == null)
                     {
@@ -38,9 +38,8 @@ public class UserCacheService
             }
             return _instance;
         }
-
-        // Caută un user în cache sau îl ia din DB dacă nu există
-        public async Task<User?> GetUserByIdAsync(int userId)
+        
+        public async Task<User?> GetUserByIdAsync(Guid userId)
         {
             if (_cache.TryGetValue(userId, out var user))
             {
@@ -55,20 +54,16 @@ public class UserCacheService
 
             return user;
         }
-
-        // Adaugă user în cache după ce este adăugat în DB
-        public void AddUserToCache(User user)
+        
+        public void AddUserToCache(User? user)
         {
-            _cache[user.Id] = user;
+            if (user != null) _cache[user.Id] = user;
         }
-
-        // Șterge manual un utilizator din cache
-        public void RemoveUserFromCache(int userId)
+        public void RemoveUserFromCache(Guid userId)
         {
             _cache.TryRemove(userId, out _);
         }
-
-        // Golește cache-ul automat la fiecare 5 minute
+        
         private void ClearCache(object? state)
         {
             _cache.Clear();

@@ -6,6 +6,7 @@ namespace AirportManagement.Application.Interfaces.IRepository;
 public interface IUserRepository
 {
     Task<User?> GetUserByEmailAsync(string email);
-    Task AddUserAsync(User user);
-    Task<User?> GetUserByIdAsync(int userId);
+    Task AddUserAsync(User? user);
+    Task<User?> GetUserByIdAsync(Guid userId);
+    Task<User?> GetByEmailAsync(string email);
 }

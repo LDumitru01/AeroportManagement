@@ -2,8 +2,9 @@
 
 public class SmsNotificationSender : INotificationSender
 {
-    public void Send(string to, string message)
+    public Task SendAsync(string to, string message)
     {
-        Console.WriteLine($"Sending message: {to}: {message}");   
+        Console.WriteLine($"Sending message: {to}: {message}");
+        return Task.CompletedTask;
     }
 }

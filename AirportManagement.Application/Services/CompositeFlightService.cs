@@ -13,13 +13,13 @@ public class CompositeFlightService : ICompositeFlightService
         _flightRepository = flightRepository;
     }
 
-    public async Task<IFlightComponent> BuildCompositeFlightAsync(List<int> flightIds)
+    public async Task<IFlightComponent> BuildCompositeFlightAsync(List<string> flightNumbers)
     {
         var composite = new CompositeFlight();
 
-        foreach (var id in flightIds)
+        foreach (var number in flightNumbers)
         {
-            var flight = await _flightRepository.GetFlightByIdAsync(id);
+            var flight = await _flightRepository.GetFlightByNumberAsync(number);
             if (flight != null)
             {
                 var flightLeaf = new FlightLeaf(flight);

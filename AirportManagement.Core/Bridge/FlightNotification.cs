@@ -2,12 +2,10 @@
 
 public class FlightNotification : Notification
 {
-    public FlightNotification(INotificationSender sender) : base(sender)
-    {
-    }
+    public FlightNotification(INotificationSender sender) : base(sender) {}
 
-    public override void Notify(string to, string message)
+    public override async Task NotifyAsync(string destination, string content)
     {
-        _sender.Send(to, $"[FLight info] {message}");
+        await _sender.SendAsync(destination, content);
     }
 }

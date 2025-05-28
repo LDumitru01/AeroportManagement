@@ -2,7 +2,7 @@
 using AirportManagement.Core.Models;
 using AirportManagement.Database.Data;
 using Microsoft.EntityFrameworkCore;
-
+using System.Linq;
 namespace AirportManagement.Application.Repository;
 
 
@@ -48,4 +48,23 @@ public class TicketRepository : ITicketRepository
         }
     }
 
+    public async Task UpdateAsync(Ticket ticket)
+    {
+        _context.Tickets.Update(ticket);
+        await _context.SaveChangesAsync();
+    }
+    public async Task<List<Ticket>> GetTicketsByEmailAsync(string email)
+    {
+        return await _context.Tickets
+            .Include(t => t.Flight)
+            .Where(t => t.Email == email)
+            .ToListAsync();
+    }
+    
+    public async Task<List<Ticket>> GetTicketsByFlightIdAsync(int flightId)
+    {
+        return await _context.Tickets
+            .Where(t => t.FlightId == flightId)
+            .ToListAsync();
+    }
 }

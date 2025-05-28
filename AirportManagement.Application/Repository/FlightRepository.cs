@@ -25,9 +25,9 @@ namespace AirportManagement.Application.Repository
             await _context.SaveChangesAsync();
         }
 
-        public async Task<Flight?> GetFlightByIdAsync(int id)
+        public async Task<Flight?> GetFlightByNumberAsync(string number)
         {
-            return await _context.Flights.FindAsync(id);
+            return await _context.Flights.FirstOrDefaultAsync(f => f.FlightNumber == number);
         }
         
         public async Task UpdateFlightAsync(Flight flight)

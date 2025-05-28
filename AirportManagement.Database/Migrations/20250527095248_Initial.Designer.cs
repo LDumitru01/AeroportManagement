@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AirportManagement.Database.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250331193600_AddIsInternationalToFlight")]
-    partial class AddIsInternationalToFlight
+    [Migration("20250527095248_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,11 +27,10 @@ namespace AirportManagement.Database.Migrations
 
             modelBuilder.Entity("AirportManagement.Core.Models.Auth.User", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWID()");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -48,6 +47,9 @@ namespace AirportManagement.Database.Migrations
                     b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Role")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -123,8 +125,15 @@ namespace AirportManagement.Database.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int?>("FlightId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsPaid")
+                        .HasColumnType("bit");
 
                     b.Property<double?>("LuggageWeight")
                         .HasColumnType("float");
@@ -133,7 +142,13 @@ namespace AirportManagement.Database.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<decimal?>("PaidAmount")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<int?>("PassengerId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PaymentMethod")
                         .HasColumnType("int");
 
                     b.Property<string>("Seat")
